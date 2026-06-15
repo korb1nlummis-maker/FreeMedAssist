@@ -1,0 +1,188 @@
+{
+  "version": "2026-06-02",
+  "source": "https://raw.githubusercontent.com/korb1nlummis-maker/FreeMedAssist/main/data/medical_actions.json",
+  "disclaimer": "General consumer guidance, not legal advice. Phone numbers verified 2026-06-02; verify before relying on them. Improve this file via a pull request and every install can pull the update.",
+  "resources": [
+    {"key": "no-surprises", "name": "CMS No Surprises Help Desk", "phone": "1-800-985-3059", "for": "surprise, out-of-network, or emergency balance bills", "free": true},
+    {"key": "medicare", "name": "Medicare", "phone": "1-800-633-4227", "for": "Medicare billing problems and the Medicare Summary Notice (1-800-MEDICARE)", "free": true},
+    {"key": "paf", "name": "Patient Advocate Foundation (free case managers)", "phone": "1-800-532-5274", "for": "insurance denials and large medical debt with a serious diagnosis", "free": true},
+    {"key": "dollar-for", "name": "Dollar For", "phone": "", "url": "https://dollarfor.org", "for": "free help applying for hospital charity care (501(r))", "free": true},
+    {"key": "unitedway-211", "name": "United Way 211", "phone": "211", "for": "local help with bills, food, utilities, and benefits navigation", "free": true},
+    {"key": "state-medicaid", "name": "Your state Medicaid office", "phone": "1-800-318-2596", "for": "apply for Medicaid, including retroactive coverage of past bills - find your state office at medicaid.gov, or call to be routed", "free": true},
+    {"key": "state-doi", "name": "Your state Department of Insurance", "phone": "", "for": "file a complaint about a private insurer - find your state insurance department in the NAIC directory at content.naic.org/state-insurance-departments", "free": true},
+    {"key": "irs-vita", "name": "IRS VITA — free tax preparation", "phone": "1-800-906-9887", "url": "https://irs.gov/vita", "for": "free tax help to claim refundable credits (like the EITC) and check if medical costs are deductible", "free": true},
+    {"key": "healthcare-gov", "name": "HealthCare.gov (ACA Marketplace)", "phone": "1-800-318-2596", "url": "https://healthcare.gov", "for": "heavily subsidized health coverage going forward if you are uninsured (many pay $0–$10/month)", "free": true}
+  ],
+  "playbooks": {
+    "summary-bill-not-itemized": {
+      "title": "You only got a summary bill — get the itemized one",
+      "call": ["Hospital billing department (number on your statement)"],
+      "say": "I received a summary bill with charges grouped into categories. Please send me a FULLY ITEMIZED bill for account #[ACCOUNT] — every code, drug, supply, and its price — before I pay. I'm reviewing it for errors.",
+      "handle": ["Overcharges, duplicates, and services you never got hide in category totals.", "You have the right to an itemized bill — don't pay off a summary.", "Once you have it, run it through here to check each line."]
+    },
+    "above-medicare-benchmark": {
+      "title": "A charge far above the Medicare rate",
+      "call": ["Hospital billing department (number on your statement)", "If billing won't help: ask for a financial counselor or patient advocate"],
+      "say": "Hi, I'm reviewing my itemized bill, account #[ACCOUNT]. The line [CODE] — [DESCRIPTION] — was billed at $[AMOUNT], which is about [N] times the Medicare-allowed amount in my area. Please tell me the cash/self-pay price, reprice this line, and send me your financial-assistance application.",
+      "handle": ["Get everything in writing and note the name, date, and a reference number.", "Do NOT agree to a payment plan until the bill is corrected and you've applied for financial assistance.", "If refused, ask for a supervisor or patient advocate, then escalate to your state insurance department or a free advocate (below)."]
+    },
+    "duplicate-charge": {
+      "title": "The same item billed more than once",
+      "call": ["Hospital billing department (number on your statement)"],
+      "say": "On account #[ACCOUNT], the line [CODE] — [DESCRIPTION] appears to be billed more than once for the same date. Please remove the duplicate and send a corrected itemized statement.",
+      "handle": ["Point to the exact duplicate lines.", "Request a corrected itemized bill in writing before paying anything."]
+    },
+    "code-description-mismatch": {
+      "title": "A billing code that may not match the service",
+      "call": ["Hospital billing department", "Your insurer's member services (if insured)"],
+      "say": "On account #[ACCOUNT], line [CODE] is described as '[DESCRIPTION]', but that code officially means something different. Please confirm the code is correct for the service I actually received, and correct it if not.",
+      "handle": ["A wrong code can raise the price or wrongly deny insurance.", "Ask them to verify against your medical record, in writing."]
+    },
+    "line-math-error": {
+      "title": "Quantity times price doesn't equal the line total",
+      "call": ["Hospital billing department"],
+      "say": "On account #[ACCOUNT], line [CODE] — [DESCRIPTION]: the quantity times the unit price doesn't equal the total billed. Please correct the arithmetic and send a corrected statement.",
+      "handle": ["Show the math.", "Request a corrected bill before paying."]
+    },
+    "bill-total-mismatch": {
+      "title": "The total doesn't match the itemized lines",
+      "call": ["Hospital billing department"],
+      "say": "On account #[ACCOUNT], the stated total doesn't match the sum of the itemized lines. Please send a fully itemized statement and a corrected total.",
+      "handle": ["Always work from a fully itemized bill, never a summary.", "Don't pay a total you can't reconcile."]
+    },
+    "quantity-anomaly": {
+      "title": "An implausibly high quantity (often a keying error)",
+      "call": ["Hospital billing department"],
+      "say": "On account #[ACCOUNT], line [CODE] — [DESCRIPTION] shows a quantity that looks far too high for one visit. Please confirm the units actually provided and correct it.",
+      "handle": ["A misplaced quantity can multiply a charge enormously.", "Ask for the medical record backing the quantity."]
+    },
+    "unbundling": {
+      "title": "Parts billed separately when a package code was also billed",
+      "call": ["Hospital billing department"],
+      "say": "On account #[ACCOUNT], the line [DESCRIPTION] looks like it's already included in a group of tests that was also billed together. Please confirm I'm not being charged separately for something already included, and remove it if so.",
+      "handle": ["Ask whether this line is already part of a group of tests billed together.", "Request the correction in writing."]
+    },
+    "price-vs-reference": {
+      "title": "Price well above a typical reference",
+      "call": ["Hospital billing department"],
+      "say": "On account #[ACCOUNT], line [CODE] — [DESCRIPTION] is priced well above typical. Please share the cash/self-pay price and reprice it, and send your financial-assistance application.",
+      "handle": ["Ask for the cash price and the financial-assistance policy.", "Don't pay until corrected."]
+    },
+    "balance-billing-possible": {
+      "title": "The bill charges more than your insurance says you owe",
+      "call": ["Hospital billing department (number on your statement)", "Your insurer's member services (number on your card)"],
+      "say": "On account #[ACCOUNT], line [CODE] — [DESCRIPTION] — was billed at $[AMOUNT], but my insurance EOB says I owe much less for it. I've given you my insurance. Please rebill me the insurance-adjusted amount from my EOB, not the full charge.",
+      "handle": ["Have your EOB in hand and read them the 'patient responsibility' amount for that line.", "Don't pay the full charge if your insurer already processed it.", "Get the corrected balance in writing before paying."]
+    },
+    "network-status-mismatch": {
+      "title": "Billed out-of-network when you were in-network (surprise bill)",
+      "call": ["CMS No Surprises Help Desk: 1-800-985-3059", "Your insurer's member services"],
+      "say": "I was treated at an in-network facility, but my EOB processed line [CODE] — [DESCRIPTION] as out-of-network. Under the No Surprises Act I should owe only my in-network share. Please reprocess this and correct the balance bill.",
+      "handle": ["You usually owe only your in-network cost share for surprise out-of-network care.", "Ask the insurer to reprocess it in-network; file a federal complaint if it isn't fixed."]
+    },
+    "eob-line-missing": {
+      "title": "A charge your insurance never saw",
+      "call": ["Hospital billing department", "Your insurer's member services"],
+      "say": "On account #[ACCOUNT], line [CODE] — [DESCRIPTION] is on my bill but has no matching line on my insurance EOB. Please confirm this claim was submitted to my insurance, and bill my insurer before billing me.",
+      "handle": ["A service the insurer never saw may be billed to you in error.", "Ask the provider to (re)submit the claim to your insurance first."]
+    },
+    "copay-mismatch": {
+      "title": "The bill amount doesn't match your EOB",
+      "call": ["Hospital billing department"],
+      "say": "On account #[ACCOUNT], line [CODE] — [DESCRIPTION] is billed for more than the patient-responsibility amount on my insurance EOB. Please correct it to match my EOB.",
+      "handle": ["Read them the patient-responsibility amount from your EOB for that line.", "Ask for a corrected statement."]
+    },
+    "coordination-failure": {
+      "title": "Make sure your second insurance was billed",
+      "call": ["Hospital billing department", "Your secondary/supplemental insurer"],
+      "say": "I have a secondary/supplemental plan. Please bill my primary plan and then my secondary plan before billing me — I should only owe what's left after both have paid.",
+      "handle": ["Confirm BOTH insurers processed the claim before paying anything.", "Your secondary should cover much of the leftover balance."]
+    }
+  },
+  "programs": {
+    "medicare-assignment": {
+      "title": "A Medicare charge above the approved amount",
+      "call": ["Hospital billing department", "1-800-MEDICARE (1-800-633-4227)"],
+      "say": "I have Medicare. This charge is more than the Medicare-approved amount for a provider who accepts assignment. Please correct it — I owe only my deductible and coinsurance.",
+      "handle": ["Compare the bill to your Medicare Summary Notice (MSN).", "If it isn't fixed, report it to 1-800-MEDICARE."]
+    },
+    "medicaid-no-balance-billing": {
+      "title": "Being balance-billed even though you have Medicaid",
+      "call": ["Hospital billing department", "Your state Medicaid office (find it at medicaid.gov)"],
+      "say": "I have Medicaid and you accepted it for this care, so I can't be balance-billed beyond allowed copays. Please remove this charge.",
+      "handle": ["Providers who accept Medicaid generally cannot bill you the balance for covered care.", "Report improper billing to your state Medicaid office."]
+    },
+    "insurer-appeal-rights": {
+      "title": "Appeal a denied or underpaid insurance claim",
+      "call": ["Your insurer's member services (number on your card)"],
+      "say": "I'm filing an internal appeal of this claim decision, and I want an independent external review if it's upheld. Please send the appeal forms and the deadline.",
+      "handle": ["Appeal in writing before the deadline on your denial letter (often 180 days).", "Keep copies; get the decision in writing."]
+    },
+    "coordination-of-benefits": {
+      "title": "Make sure your secondary/supplemental plan was billed first",
+      "call": ["Hospital billing department", "Your secondary/supplemental insurer"],
+      "say": "Please bill my primary plan and then my secondary/supplemental plan before billing me directly.",
+      "handle": ["Confirm BOTH insurers' EOBs before paying anything.", "You should only owe what's left after both plans pay."]
+    },
+    "charity-care-501r": {
+      "title": "Apply for charity care (financial assistance)",
+      "call": ["Hospital billing / financial-assistance office (ask for the 'Financial Assistance Policy' / FAP)", "Dollar For — free help applying: dollarfor.org"],
+      "say": "I'd like to apply for your financial-assistance policy. Please pause collections on account #[ACCOUNT] while my application is reviewed, and send me the application and the income documents you need.",
+      "handle": ["Nonprofit hospitals are legally required to have this and can't charge you more than insured patients.", "Apply even after the bill arrives; ask them to hold collections during review.", "Keep copies of everything you submit."]
+    },
+    "good-faith-estimate": {
+      "title": "Dispute a bill that's far over your Good Faith Estimate (uninsured)",
+      "call": ["CMS No Surprises Help Desk: 1-800-985-3059"],
+      "say": "I'm uninsured/self-pay. My final bill is at least $400 over the Good Faith Estimate I was given. I want to start the Patient-Provider Dispute Resolution process.",
+      "handle": ["Find your written estimate and compare it to the final bill.", "You generally have 120 days from the bill to dispute."]
+    },
+    "no-surprises-act": {
+      "title": "Surprise / out-of-network balance bill (you have insurance)",
+      "call": ["CMS No Surprises Help Desk: 1-800-985-3059", "Your insurer's member services"],
+      "say": "This was emergency care (or an out-of-network provider at an in-network facility). Under the No Surprises Act I should owe only my in-network cost share. Please correct the balance bill.",
+      "handle": ["You only owe your normal in-network share — not the balance.", "File a federal complaint if it isn't fixed."]
+    },
+    "medicaid-retroactive": {
+      "title": "Apply for Medicaid (it can pay past bills)",
+      "call": ["Your state Medicaid office (find it at medicaid.gov)", "United Way 211 for application help"],
+      "say": "I'd like to apply for Medicaid and ask about retroactive coverage for medical bills from the last few months.",
+      "handle": ["Medicaid can cover bills up to 3 months before you applied.", "Tell the hospital an application is pending and ask them to hold collections."]
+    },
+    "itemized-bill": {
+      "title": "Request a fully itemized bill",
+      "call": ["Hospital billing department"],
+      "say": "Please send me a fully itemized bill for account #[ACCOUNT] with every code, description, quantity, and charge. I'm reviewing it before paying.",
+      "handle": ["Errors hide in summary bills.", "You have the right to itemization — don't pay until you have it."]
+    },
+    "debt-validation-fdcpa": {
+      "title": "Make a collector validate the debt",
+      "call": ["The collection agency (in writing is best)"],
+      "say": "I dispute this debt and request written validation under the Fair Debt Collection Practices Act. Do not contact me further until you provide it.",
+      "handle": ["Send within 30 days of first contact; keep a copy.", "They must stop collecting until they validate.", "Never pay a medical debt in collections before validating and checking it for errors."]
+    },
+    "medical-debt-credit": {
+      "title": "Protect your credit from medical debt",
+      "call": ["Your collector (to dispute)", "The credit bureaus if it's wrongly reported"],
+      "say": "Medical collections under $500 and any paid medical debt should not appear on my credit report, and there's a 12-month grace period. Please remove it.",
+      "handle": ["Don't be pressured by credit threats.", "Dispute wrongly-reported medical debt with the bureau."]
+    },
+    "medical-expense-deduction": {
+      "title": "Check whether your medical costs are tax-deductible",
+      "call": ["IRS VITA — free tax preparation: 1-800-906-9887 (irs.gov/vita)"],
+      "say": "I had large out-of-pocket medical costs this year. Can you check whether I should itemize and deduct the part of my medical expenses above 7.5% of my income, or whether the standard deduction is better for me?",
+      "handle": ["If you itemize and your out-of-pocket medical costs were more than 7.5% of your income, you can deduct the part above 7.5%.", "Most lower-income filers take the standard deduction instead — free tax help (VITA) can tell you which is better.", "Source: IRS Topic No. 502 / Publication 502."]
+    },
+    "aca-marketplace-subsidy": {
+      "title": "Get heavily subsidized coverage going forward (if uninsured)",
+      "call": ["HealthCare.gov: 1-800-318-2596 (healthcare.gov)"],
+      "say": "I'm uninsured and want to check what Marketplace health coverage I qualify for, including premium subsidies based on my income.",
+      "handle": ["Many low-income people pay $0–$10/month for Marketplace coverage with subsidies.", "This protects you from the next bill — apply at healthcare.gov or by phone."]
+    },
+    "free-tax-help-eitc": {
+      "title": "Get free tax help to claim money you're owed (like the EITC)",
+      "call": ["IRS VITA — free tax preparation: 1-800-906-9887 (irs.gov/vita)"],
+      "say": "I'd like free help preparing my taxes and making sure I claim every refundable credit I'm owed, including the Earned Income Tax Credit (EITC).",
+      "handle": ["VITA tax help is free and can make sure you claim refundable credits like the EITC — often a few thousand dollars back.", "Bring your ID, Social Security cards, and income documents.", "More: irs.gov/vita and irs.gov/eitc."]
+    }
+  }
+}
